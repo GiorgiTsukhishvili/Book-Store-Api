@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/config"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
@@ -19,7 +20,7 @@ func main() {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	router.SetTrustedProxies([]string{"127.0.0.1"})
+	router.SetTrustedProxies(strings.Split(os.Getenv("TRUSTED_PROXIES"), ","))
 
 	router.Use(config.CorsConfig())
 
