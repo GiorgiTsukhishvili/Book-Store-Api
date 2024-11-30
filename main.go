@@ -1,9 +1,17 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/config"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/gin-gonic/gin"
 )
+
+func init() {
+	initializers.EnvInitializer()
+}
 
 func main() {
 	router := gin.New()
@@ -15,5 +23,5 @@ func main() {
 
 	router.Use(config.CorsConfig())
 
-	router.Run(":3000")
+	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
