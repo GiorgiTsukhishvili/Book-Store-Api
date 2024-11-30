@@ -7,6 +7,7 @@ import (
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/config"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/routes"
 	"github.com/gin-gonic/gin"
 )
 
@@ -23,6 +24,8 @@ func main() {
 	router.SetTrustedProxies(strings.Split(os.Getenv("TRUSTED_PROXIES"), ","))
 
 	router.Use(config.CorsConfig())
+
+	routes.ApiRoutes(router)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
