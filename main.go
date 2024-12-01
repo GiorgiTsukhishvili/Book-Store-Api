@@ -14,6 +14,7 @@ import (
 func init() {
 	initializers.EnvInitializer()
 	initializers.GormInitializer()
+	initializers.EnumsInitializer()
 	initializers.MigrationsInitializer()
 }
 

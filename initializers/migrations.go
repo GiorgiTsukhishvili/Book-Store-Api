@@ -1,9 +1,13 @@
 package initializers
 
-import "log"
+import (
+	"log"
+
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
+)
 
 func MigrationsInitializer() {
-	err := DB.AutoMigrate()
+	err := DB.AutoMigrate(&models.User{})
 
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
