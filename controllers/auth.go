@@ -34,6 +34,7 @@ func Register(ctx *gin.Context) {
 		Email:    req.Email,
 		Password: hashedPassword,
 		Type:     req.Type,
+		Image:    "default.png",
 	}
 
 	if err := initializers.DB.Create(&user); err.Error != nil {
