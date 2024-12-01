@@ -9,7 +9,7 @@ import (
 )
 
 type CustomClaims struct {
-	UserID string
+	UserID uint
 	Email  string
 	jwt.RegisteredClaims
 }
@@ -21,15 +21,15 @@ type JWTInfo struct {
 	RefreshTokenExpiration time.Time
 }
 
-func GenerateJWTTokens(userID string, email string) (*JWTInfo, error) {
+func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
 
 	expiration, err := strconv.Atoi(os.Getenv("JWT_TOKEN_EXPIRATION_DATE"))
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
 	refreshExpiration, err := strconv.Atoi(os.Getenv("JWT_REFRESH_TOKEN_EXPIRATION_DATE"))
-	if err == nil {
+	if err != nil {
 		return nil, err
 	}
 
@@ -46,7 +46,7 @@ func GenerateJWTTokens(userID string, email string) (*JWTInfo, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	jwtToken, err := token.SignedString(os.Getenv("ACCESS_TOKEN_SECRET"))
+	jwtToken, err := token.SignedString([]byte(os.Getenv("ACCESS_TOKEN_SECRET")))
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func GenerateJWTTokens(userID string, email string) (*JWTInfo, error) {
 	}
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
-	jwtRefreshToken, err := refreshToken.SignedString(os.Getenv("REFRESH_TOKEN_SECRET"))
+	jwtRefreshToken, err := refreshToken.SignedString([]byte(os.Getenv("REFRESH_TOKEN_SECRET")))
 	if err != nil {
 		return nil, err
 	}
