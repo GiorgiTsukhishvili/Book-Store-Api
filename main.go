@@ -13,6 +13,8 @@ import (
 
 func init() {
 	initializers.EnvInitializer()
+	initializers.GormInitializer()
+	initializers.MigrationsInitializer()
 }
 
 func main() {
