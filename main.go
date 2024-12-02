@@ -16,6 +16,7 @@ func init() {
 	initializers.GormInitializer()
 	initializers.EnumsInitializer()
 	initializers.MigrationsInitializer()
+	initializers.RedisInitializer()
 }
 
 func main() {
