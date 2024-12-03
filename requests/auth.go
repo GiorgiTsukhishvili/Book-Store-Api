@@ -8,3 +8,7 @@ type UserRegisterRequest struct {
 	Password string          `json:"password" binding:"required"`
 	Type     models.UserType `json:"type" binding:"required"`
 }
+
+type UserVerifyRequest struct {
+	Code string `json:"code" binding:"required"`
+}

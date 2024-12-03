@@ -1,7 +1,9 @@
 package initializers
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/redis/go-redis/v9"
@@ -16,4 +18,12 @@ func RedisInitializer() {
 		DB:       0, // Use default DB
 		Protocol: 2, // Connection protocol
 	})
+
+	_, err := Redis.Ping(context.Background()).Result()
+
+	if err != nil {
+		log.Println("Redis connection not established")
+	} else {
+		log.Println("Redis connection established successfully")
+	}
 }

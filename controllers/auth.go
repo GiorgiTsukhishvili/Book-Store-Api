@@ -1,12 +1,16 @@
 package controllers
 
 import (
+	"context"
+	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -37,12 +41,68 @@ func Register(ctx *gin.Context) {
 		Image:    "default.png",
 	}
 
+	rand := scripts.RandomNumber()
+
+	userData, err := json.Marshal(user)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to serialize user data: " + err.Error(),
+		})
+		return
+	}
+
+	if err := initializers.Redis.Set(context.Background(), rand, userData, 30*time.Minute).Err(); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Verification email was sent",
+	})
+}
+
+func Logout(ctx *gin.Context) {}
+
+func VerifyUser(ctx *gin.Context) {
+
+	var req requests.UserVerifyRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var user models.User
+
+	data, err := initializers.Redis.Get(context.Background(), req.Code).Result()
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid code",
+			"err":   err,
+		})
+		return
+	}
+
+	if err := json.Unmarshal([]byte(data), &user); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to parse user data: " + err.Error(),
+		})
+		return
+	}
+
 	if err := initializers.DB.Create(&user); err.Error != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error.Error(),
 		})
 		return
 	}
+
+	initializers.Redis.Del(context.Background(), req.Code)
 
 	tokensInfo, err := utils.GenerateJWTTokens(user.ID, user.Email)
 
@@ -61,5 +121,3 @@ func Register(ctx *gin.Context) {
 		"jwt": tokensInfo,
 	})
 }
-
-func Logout(ctx *gin.Context) {}
