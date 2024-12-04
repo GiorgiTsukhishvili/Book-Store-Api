@@ -3,6 +3,8 @@ package templates
 import (
 	"fmt"
 	"os"
+
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/translations"
 )
 
 func VerificationEmailTemplate(
@@ -142,13 +144,13 @@ func VerificationEmailTemplate(
 
 </html>`,
 		os.Getenv("APP_URL"),
-		fmt.Sprintf("emailTranslations[%q].name", lang),
-		fmt.Sprintf("emailTranslations[%q].hello", lang), name,
+		translations.GetTranslation(lang, "name"),
+		translations.GetTranslation(lang, "hello"), name,
 		mainText,
 		route, buttonText,
-		fmt.Sprintf("emailTranslations[%q].clicking", lang),
+		translations.GetTranslation(lang, "clicking"),
 		route, routeText,
-		fmt.Sprintf("emailTranslations[%q][%q]", lang, "any-problem"),
-		fmt.Sprintf("emailTranslations[%q].crew", lang),
+		translations.GetTranslation(lang, "any-problem"),
+		translations.GetTranslation(lang, "crew"),
 	)
 }
