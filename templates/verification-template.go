@@ -9,11 +9,10 @@ import (
 
 func VerificationEmailTemplate(
 	lang string,
-	route string,
+	code string,
 	name string,
 	mainText string,
 	buttonText string,
-	routeText string,
 ) string {
 	return fmt.Sprintf(`<!DOCTYPE html>
 <html lang="en">
@@ -131,11 +130,9 @@ func VerificationEmailTemplate(
 
     <h1 class="middle-text">%s</h1>
 
-    <a href="%s" class="red-button">%s</a>
+    <a class="red-button">%s</a>
 
     <h1 class="text-after-button">%s</h1>
-
-    <a href="%s" class="link">%s</a>
 
     <h1 class="bottom-text">%s <a href="bookquotes.ge" class="website">support@bookquotes.ge</a></h1>
 
@@ -147,9 +144,8 @@ func VerificationEmailTemplate(
 		translations.GetTranslation(lang, "name"),
 		translations.GetTranslation(lang, "hello"), name,
 		mainText,
-		route, buttonText,
+		code,
 		translations.GetTranslation(lang, "clicking"),
-		route, routeText,
 		translations.GetTranslation(lang, "any-problem"),
 		translations.GetTranslation(lang, "crew"),
 	)

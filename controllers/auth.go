@@ -11,6 +11,7 @@ import (
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/translations"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -41,7 +42,7 @@ func Register(ctx *gin.Context) {
 		Image:    "default.png",
 	}
 
-	rand := scripts.RandomNumber()
+	code := scripts.RandomNumber()
 
 	userData, err := json.Marshal(user)
 	if err != nil {
@@ -51,12 +52,14 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
-	if err := initializers.Redis.Set(context.Background(), rand, userData, 30*time.Minute).Err(); err != nil {
+	if err := initializers.Redis.Set(context.Background(), code, userData, 30*time.Minute).Err(); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
+
+	utils.SendEmail(user.Email, "Account verification", "en", code, user.Name, translations.GetTranslation("en", "joining-text"), translations.GetTranslation("en", "account-verification"))
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": "Verification email was sent",
