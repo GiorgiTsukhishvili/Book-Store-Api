@@ -5,8 +5,8 @@ type EmailTranslations map[string]map[string]string
 var EmailTranslationData = EmailTranslations{
 	"en": {
 		"account-verification":    "Account Verification",
-		"name":                    "Book Quotes",
-		"joining-text":            "Thanks for joining Book quotes! We really appreciate it. Please click the button below to verify your account:",
+		"name":                    "BookShelf",
+		"joining-text":            "Thanks for joining BookShelf! We really appreciate it. Please click the button below to verify your account:",
 		"verify-button":           "Verify account",
 		"clicking":                "If clicking doesn`t work, you can try copying and pasting it to your browser:",
 		"any-problem":             "If you have any problems, please contact us:",
@@ -22,12 +22,12 @@ var EmailTranslationData = EmailTranslations{
 	},
 	"ka": {
 		"account-verification":    "ანგარიშის დადასტურება",
-		"name":                    "ფილმების ციტატები",
-		"joining-text":            "გმადლობთ, რომ შეუერთდით ფილმების ციტატებს! ჩვენ ნამდვილად ვაფასებთ მას. გთხოვთ, დააჭიროთ ქვემოთ მოცემულ ღილაკს თქვენი ანგარიშის დასადასტურებლად:",
+		"name":                    "წიგნების თარო",
+		"joining-text":            "გმადლობთ, რომ შეუერთდით წიგნების თაროსს! ჩვენ ნამდვილად ვაფასებთ მას. გთხოვთ, დააჭიროთ ქვემოთ მოცემულ ღილაკს თქვენი ანგარიშის დასადასტურებლად:",
 		"verify-button":           "გააქტიურე ანგარიში",
 		"clicking":                "თუ დაწკაპუნება არ მუშაობს, შეგიძლიათ სცადოთ მისი კოპირება და ჩასმა თქვენს ბრაუზერში:",
 		"any-problem":             "თუ რაიმე პრობლემა გაქვთ, გთხოვთ დაგვიკავშირდეთ:",
-		"crew":                    "ფილმების ციტატების გუნდი",
+		"crew":                    "წიგნების თაროს გუნდი",
 		"hello":                   "გამარჯობა",
 		"password-reset":          "პაროლის რედაქტირება",
 		"reset-text":              "გთხოვთ, დააჭიროთ ქვემოთ მოცემულ ღილაკს თქვენი პაროლის შესაცვლელად:",
