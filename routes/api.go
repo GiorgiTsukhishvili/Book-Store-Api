@@ -21,6 +21,7 @@ func ApiRoutes(router *gin.Engine) {
 		private.Use(middlewares.AuthCheck)
 		{
 			private.POST("/logout", controllers.Logout)
+			private.GET("/me", controllers.Me)
 		}
 	}
 }
