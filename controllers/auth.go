@@ -69,7 +69,13 @@ func Register(ctx *gin.Context) {
 	})
 }
 
-func Logout(ctx *gin.Context) {}
+func Logout(ctx *gin.Context) {
+	ctx.SetCookie("refreshToken", "", -1, "/", "", true, true)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "User logged out",
+	})
+}
 
 func VerifyUser(ctx *gin.Context) {
 
