@@ -187,4 +187,16 @@ func RefreshToken(ctx *gin.Context) {
 		})
 		return
 	}
+
+	claims := utils.ParseJwtToken(req.RefreshToken, ctx, "REFRESH_TOKEN_SECRET")
+
+	tokensInfo, err := utils.GenerateJWTTokens(claims.UserID, claims.Email)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"jwt": tokensInfo,
+	})
 }

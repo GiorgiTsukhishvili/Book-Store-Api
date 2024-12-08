@@ -1,10 +1,13 @@
 package utils
 
 import (
+	"errors"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -65,4 +68,29 @@ func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
 	}
 
 	return &jwtInfo, nil
+}
+
+func ParseJwtToken(tokenString string, ctx *gin.Context, secret string) *CustomClaims {
+	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, errors.New("unexpected signing method")
+		}
+		return []byte(os.Getenv(secret)), nil
+	})
+
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+		ctx.Abort()
+		return nil
+	}
+
+	claims, ok := token.Claims.(*CustomClaims)
+
+	if !ok || !token.Valid {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
+		ctx.Abort()
+		return nil
+	}
+
+	return claims
 }
