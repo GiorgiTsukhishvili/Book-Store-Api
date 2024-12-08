@@ -15,9 +15,52 @@ import (
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/translations"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func Login(ctx *gin.Context) {}
+func Login(ctx *gin.Context) {
+	var req requests.UserLoginRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var user models.User
+
+	if err := initializers.DB.First(&user, "email = ?", req.Email).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	tokensInfo, err := utils.GenerateJWTTokens(user.ID, user.Email)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"user": gin.H{
+			"id":    user.ID,
+			"name":  user.Name,
+			"email": user.Email,
+			"type":  user.Type,
+			"image": user.Image,
+		},
+		"jwt": tokensInfo,
+	})
+}
 
 func Register(ctx *gin.Context) {
 	var req requests.UserRegisterRequest
