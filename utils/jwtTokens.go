@@ -51,12 +51,7 @@ func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
 		return nil, err
 	}
 
-	refreshClaims := jwt.RegisteredClaims{
-		ExpiresAt: jwt.NewNumericDate(refreshTokenExpiration),
-		IssuedAt:  jwt.NewNumericDate(time.Now()),
-	}
-
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	jwtRefreshToken, err := refreshToken.SignedString([]byte(os.Getenv("REFRESH_TOKEN_SECRET")))
 	if err != nil {
 		return nil, err

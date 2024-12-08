@@ -177,3 +177,14 @@ func VerifyUser(ctx *gin.Context) {
 		"jwt": tokensInfo,
 	})
 }
+
+func RefreshToken(ctx *gin.Context) {
+	var req requests.RefreshTokenRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+}

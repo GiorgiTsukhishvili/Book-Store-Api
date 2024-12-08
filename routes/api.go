@@ -15,6 +15,7 @@ func ApiRoutes(router *gin.Engine) {
 			public.POST("/login", controllers.Login)
 			public.POST("/register", controllers.Register)
 			public.POST("/user-verify", controllers.VerifyUser)
+			public.POST("/refresh-token", controllers.RefreshToken)
 		}
 
 		private := v1.Group("")

@@ -17,3 +17,7 @@ type UserRegisterRequest struct {
 type UserVerifyRequest struct {
 	Code string `json:"code" binding:"required"`
 }
+
+type RefreshTokenRequest struct {
+	RefreshToken string `json:"refreshToken" binding:"required"`
+}
