@@ -39,3 +39,7 @@ func Me(ctx *gin.Context) {
 		"created_at": user.CreatedAt,
 	}})
 }
+
+func PutUser(ctx *gin.Context) {}
+
+func DeleteUser(ctx *gin.Context) {}
