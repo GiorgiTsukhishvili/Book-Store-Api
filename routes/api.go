@@ -23,8 +23,13 @@ func ApiRoutes(router *gin.Engine) {
 		{
 			private.POST("/logout", controllers.Logout)
 			private.GET("/me", controllers.Me)
-			private.PUT("/user", controllers.PutUser)
-			private.DELETE("/user", controllers.DeleteUser)
+
+			user := private.Group("/user")
+			{
+				user.PUT("/:id", controllers.PutUser)
+				user.DELETE("/:id", controllers.DeleteUser)
+			}
+
 		}
 	}
 }
