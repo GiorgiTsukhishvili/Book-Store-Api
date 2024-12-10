@@ -50,4 +50,16 @@ func PutUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
 }
 
-func DeleteUser(ctx *gin.Context) {}
+func DeleteUser(ctx *gin.Context) {
+	userID := ctx.Param("id")
+
+	if err := initializers.DB.Delete(models.User{}, "id = ?", userID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	scripts.InvalidateJwtCookies(ctx)
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
+
+}
