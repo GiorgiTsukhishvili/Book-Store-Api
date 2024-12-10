@@ -6,23 +6,12 @@ import (
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
-	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
 	"github.com/gin-gonic/gin"
 )
 
 func Me(ctx *gin.Context) {
-	userInfo, exists := ctx.Get("user")
-
-	if !exists {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
-		return
-	}
-
-	claims, ok := userInfo.(*utils.CustomClaims)
-	if !ok {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user data"})
-		return
-	}
+	claims := scripts.GetUserClaims(ctx)
 
 	var user models.User
 
@@ -51,18 +40,7 @@ func PutUser(ctx *gin.Context) {
 		return
 	}
 
-	userInfo, exists := ctx.Get("user")
-
-	if !exists {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
-		return
-	}
-
-	claims, ok := userInfo.(*utils.CustomClaims)
-	if !ok {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user data"})
-		return
-	}
+	claims := scripts.GetUserClaims(ctx)
 
 	if err := initializers.DB.Model(models.User{}).Where("id = ?", claims.UserID).Updates(models.User{Name: req.Name, Image: req.Image}).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
