@@ -26,7 +26,7 @@ func ApiRoutes(router *gin.Engine) {
 
 			user := private.Group("/user")
 			{
-				user.PUT("/:id", controllers.PutUser)
+				user.PUT("/", controllers.PutUser)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
 		}
