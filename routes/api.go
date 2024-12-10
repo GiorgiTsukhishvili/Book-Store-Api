@@ -29,7 +29,6 @@ func ApiRoutes(router *gin.Engine) {
 				user.PUT("/:id", controllers.PutUser)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
-
 		}
 	}
 }

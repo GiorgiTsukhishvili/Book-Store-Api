@@ -5,6 +5,7 @@ import (
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +41,35 @@ func Me(ctx *gin.Context) {
 	}})
 }
 
-func PutUser(ctx *gin.Context) {}
+func PutUser(ctx *gin.Context) {
+	var req requests.UserPutRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	userInfo, exists := ctx.Get("user")
+
+	if !exists {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		return
+	}
+
+	claims, ok := userInfo.(*utils.CustomClaims)
+	if !ok {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user data"})
+		return
+	}
+
+	if err := initializers.DB.Model(models.User{}).Where("id = ?", claims.UserID).Updates(models.User{Name: req.Name, Image: req.Image}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
+}
 
 func DeleteUser(ctx *gin.Context) {}
