@@ -97,5 +97,8 @@ func DeleteUser(ctx *gin.Context) {
 	scripts.InvalidateJwtCookies(ctx)
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
-
 }
+
+func UserEmailUpdate(ctx *gin.Context) {}
+
+func UserEmailUpdateVerify(ctx *gin.Context) {}

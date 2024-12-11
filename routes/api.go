@@ -26,8 +26,10 @@ func ApiRoutes(router *gin.Engine) {
 
 			user := private.Group("/user")
 			{
+				user.POST("/update-email", controllers.PutUserPassword)
 				user.PUT("/", controllers.PutUser)
-				user.PUT("/password-update", controllers.PutUserPassword)
+				user.PUT("/password-update", controllers.UserEmailUpdate)
+				user.PUT("/update-email-verify", controllers.UserEmailUpdateVerify)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
 		}
