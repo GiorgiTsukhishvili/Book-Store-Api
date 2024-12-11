@@ -27,6 +27,7 @@ func ApiRoutes(router *gin.Engine) {
 			user := private.Group("/user")
 			{
 				user.PUT("/", controllers.PutUser)
+				user.PUT("/password-update", controllers.PutUserPassword)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
 		}
