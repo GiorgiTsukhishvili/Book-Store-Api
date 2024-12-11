@@ -8,10 +8,11 @@ type UserLoginRequest struct {
 }
 
 type UserRegisterRequest struct {
-	Name     string          `json:"name" binding:"required"`
-	Email    string          `json:"email" binding:"required,email"`
-	Password string          `json:"password" binding:"required"`
-	Type     models.UserType `json:"type" binding:"required"`
+	Name           string          `json:"name" binding:"required"`
+	Email          string          `json:"email" binding:"required,email"`
+	Password       string          `json:"password" binding:"required"`
+	RepeatPassword string          `json:"repeat_password" binding:"required"`
+	Type           models.UserType `json:"type" binding:"required"`
 }
 
 type UserVerifyRequest struct {

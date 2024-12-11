@@ -72,6 +72,13 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
+	if req.Password != req.RepeatPassword {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Password must be same as repeat password",
+		})
+		return
+	}
+
 	hashedPassword, err := utils.HashPassword(req.Password)
 
 	if err != nil {
