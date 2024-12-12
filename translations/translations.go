@@ -17,7 +17,7 @@ var EmailTranslationData = EmailTranslations{
 		"reset-button":            "Reset password",
 		"email-not-verified":      "Email is not verified",
 		"email-verification":      "Email Verification",
-		"email-verification-text": "Thanks for adding your email! We really appreciate it. Please use the 4-digit code below to verify your email:",
+		"email-verification-text": "Thanks for changing your email! We really appreciate it. Please use the 4-digit code below to verify your email:",
 		"email-verify-button":     "Verify email",
 	},
 	"ka": {
@@ -34,7 +34,7 @@ var EmailTranslationData = EmailTranslations{
 		"reset-button":            "პაროლის რედაქტირება",
 		"email-not-verified":      "მეილი არ არის ვერიფიცირებული",
 		"email-verification":      "მეილის ვერიფიკაცია",
-		"email-verification-text": "გმადლობთ, რომ დაამატეთ დამატებითი მეილი. გთხოვთ, გამოიყენოთ ქვემოთ მოცემული 4-ნიშნა კოდი თქვენი მეილის დასადასტურებლად:",
+		"email-verification-text": "გმადლობთ, რომ შეცვალეთ მეილი. გთხოვთ, გამოიყენოთ ქვემოთ მოცემული 4-ნიშნა კოდი თქვენი მეილის დასადასტურებლად:",
 		"email-verify-button":     "დაადასტურე მეილი",
 	},
 }
