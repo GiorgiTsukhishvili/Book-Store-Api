@@ -5,6 +5,11 @@ type UserPutRequest struct {
 	Image string `json:"image" binding:"required"`
 }
 
+type UserEmailPutRequest struct {
+	Password       string `json:"password" binding:"required"`
+	RepeatPassword string `json:"repeat_password" binding:"required"`
+}
+
 type UserPasswordPutRequest struct {
 	Password       string `json:"password" binding:"required"`
 	RepeatPassword string `json:"repeat_password" binding:"required"`

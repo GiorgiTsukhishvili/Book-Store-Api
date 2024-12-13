@@ -99,6 +99,24 @@ func DeleteUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 }
 
-func UserEmailUpdate(ctx *gin.Context) {}
+func UserEmailUpdate(ctx *gin.Context) {
+	var req requests.UserEmailPutRequest
 
-func UserEmailUpdateVerify(ctx *gin.Context) {}
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+}
+
+func UserEmailUpdateVerify(ctx *gin.Context) {
+	var req requests.UserVerifyRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+}
