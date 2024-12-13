@@ -1,13 +1,16 @@
 package controllers
 
 import (
+	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/translations"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
 )
@@ -108,6 +111,30 @@ func UserEmailUpdate(ctx *gin.Context) {
 		})
 		return
 	}
+
+	code := scripts.RandomNumber()
+
+	if err := initializers.Redis.Set(context.Background(), code, req.Email, 30*time.Minute).Err(); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	var user models.User
+
+	if err := initializers.DB.Select("id", "name", "email", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	utils.SendEmail(user.Email, "Email Verification", "en", code, user.Name, translations.GetTranslation("en", "email-verification-text"), translations.GetTranslation("en", "email-verification"))
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Verification email was sent",
+	})
 }
 
 func UserEmailUpdateVerify(ctx *gin.Context) {

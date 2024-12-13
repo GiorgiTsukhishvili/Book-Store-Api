@@ -3,7 +3,6 @@ package controllers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -95,9 +94,8 @@ func Register(ctx *gin.Context) {
 
 	code := scripts.RandomNumber()
 
-	fmt.Println(code)
-
 	userData, err := json.Marshal(user)
+
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
 			"error": "Failed to serialize user data: " + err.Error(),
