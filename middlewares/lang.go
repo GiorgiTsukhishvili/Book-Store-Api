@@ -7,7 +7,7 @@ import (
 func LangCheck(ctx *gin.Context) {
 	langHeader := ctx.GetHeader("Accept-Language")
 
-	if langHeader == "" {
+	if langHeader != "en" && langHeader != "ka" {
 		langHeader = "en"
 	}
 
