@@ -110,7 +110,9 @@ func Register(ctx *gin.Context) {
 		return
 	}
 
-	utils.SendEmail(user.Email, "Account verification", "en", code, user.Name, translations.GetTranslation("en", "joining-text"), translations.GetTranslation("en", "account-verification"))
+	lang := scripts.GetUserLang(ctx)
+
+	utils.SendEmail(user.Email, "Account verification", lang, code, user.Name, translations.GetTranslation(lang, "joining-text"), translations.GetTranslation(lang, "account-verification"))
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"message": "Verification email was sent",

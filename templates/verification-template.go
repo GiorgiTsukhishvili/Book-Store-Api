@@ -113,7 +113,7 @@ func VerificationEmailTemplate(
         <div class="email-body">
             <h1>%s %s,</h1>
             <p>%s</p>
-            <a href="%s/verify?code=%s" class="email-button">%s</a>
+            <a class="email-button">%s</a>
         </div>
 
         <div class="email-footer">
@@ -127,8 +127,7 @@ func VerificationEmailTemplate(
 		os.Getenv("APP_URL"),
 		translations.GetTranslation(lang, "hello"), name,
 		mainText,
-		os.Getenv("APP_URL"), code,
-		buttonText,
+		code,
 		translations.GetTranslation(lang, "any-problem"),
 		translations.GetTranslation(lang, "crew"),
 	)
