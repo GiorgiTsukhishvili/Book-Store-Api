@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"time"
@@ -146,4 +147,33 @@ func UserEmailUpdateVerify(ctx *gin.Context) {
 		})
 		return
 	}
+
+	data, err := initializers.Redis.Get(context.Background(), req.Code).Result()
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid code",
+			"err":   err,
+		})
+		return
+	}
+
+	var email string
+
+	if err := json.Unmarshal([]byte(data), &email); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": "Failed to parse user data: " + err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	if err := initializers.DB.Model(models.User{}).Where("id = ?", claims.UserID).Updates(models.User{Email: email}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User email updated successfully"})
+
 }
