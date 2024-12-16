@@ -162,7 +162,7 @@ func UserEmailUpdateVerify(ctx *gin.Context) {
 
 	if err := json.Unmarshal([]byte(data), &email); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": "Failed to parse user data: " + err.Error(),
+			"error": "Failed to parse user email: " + err.Error(),
 		})
 		return
 	}
