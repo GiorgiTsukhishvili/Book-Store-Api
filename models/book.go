@@ -8,6 +8,6 @@ type Book struct {
 	Description string `gorm:"not null"`
 	Price       string `gorm:"not null"`
 	Image       string `gorm:"not null"`
-	Author      string `gorm:"not null"`
+	AuthorID    uint
 	UserID      uint
 }
