@@ -7,7 +7,7 @@ import (
 )
 
 func MigrationsInitializer() {
-	err := DB.AutoMigrate(&models.User{}, &models.Book{})
+	err := DB.AutoMigrate(&models.User{}, &models.Book{}, &models.Author{})
 
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
