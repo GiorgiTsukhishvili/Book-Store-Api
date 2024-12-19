@@ -33,6 +33,20 @@ func ApiRoutes(router *gin.Engine) {
 				user.PUT("/update-email-verify", controllers.UserEmailUpdateVerify)
 				user.DELETE("/:id", controllers.DeleteUser)
 			}
+
+			author := private.Group("/author")
+			{
+				author.GET("/:id")
+				author.GET("/")
+
+				admin := author.Group("")
+
+				{
+					admin.POST("/")
+					admin.PUT("/")
+					admin.DELETE("/:id")
+				}
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@ type UserType string
 
 const (
 	UserTypeUser     UserType = "user"
+	UserTypeAdmin    UserType = "admin"
 	UserTypeBusiness UserType = "business"
 )
 
