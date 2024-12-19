@@ -40,7 +40,7 @@ func ApiRoutes(router *gin.Engine) {
 				author.GET("/")
 
 				admin := author.Group("")
-
+				admin.Use(middlewares.AdminCheck)
 				{
 					admin.POST("/")
 					admin.PUT("/")
