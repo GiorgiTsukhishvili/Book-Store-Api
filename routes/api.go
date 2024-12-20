@@ -36,15 +36,15 @@ func ApiRoutes(router *gin.Engine) {
 
 			author := private.Group("/author")
 			{
-				author.GET("/:id")
-				author.GET("/")
+				author.GET("/:id", controllers.GetAuthor)
+				author.GET("/", controllers.GetAuthors)
 
 				admin := author.Group("")
 				admin.Use(middlewares.AdminCheck)
 				{
-					admin.POST("/")
-					admin.PUT("/")
-					admin.DELETE("/:id")
+					admin.POST("/", controllers.PostAuthor)
+					admin.PUT("/", controllers.PutAuthor)
+					admin.DELETE("/:id", controllers.DeleteAuthor)
 				}
 			}
 		}
