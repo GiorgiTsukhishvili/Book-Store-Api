@@ -19,7 +19,7 @@ func AdminCheck(ctx *gin.Context) {
 		return
 	}
 
-	if user.Type != "admin" {
+	if user.Type != models.UserTypeAdmin {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User is has no valid credentials"})
 		ctx.Abort()
 		return
