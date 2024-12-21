@@ -61,10 +61,37 @@ func GetAuthors(ctx *gin.Context) {
 			"last_page":    int(totalRecords) / size,
 		},
 	})
-
 }
 
-func PostAuthor(ctx *gin.Context) {}
+func PostAuthor(ctx *gin.Context) {
+	var req requests.AuthorPostRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	author := models.Author{
+		Name:        req.Name,
+		BirthDate:   req.BirthDate,
+		Image:       req.Image,
+		Description: req.Description,
+		Nationality: req.Nationality,
+	}
+
+	if err := initializers.DB.Create(&author).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"author": author,
+	})
+}
 
 func PutAuthor(ctx *gin.Context) {}
 
@@ -81,5 +108,4 @@ func DeleteAuthor(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "Author deleted successfully",
 	})
-
 }
