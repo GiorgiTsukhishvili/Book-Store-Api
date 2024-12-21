@@ -13,8 +13,8 @@ func GetAuthor(ctx *gin.Context) {
 
 	var author models.Author
 
-	if err := initializers.DB.Select("id", "name", "email", "image", "type", "created_at").First(&author, "id = ?", authorID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+	if err := initializers.DB.Preload("Books").First(&author, "id = ?", authorID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "author not found"})
 		return
 	}
 

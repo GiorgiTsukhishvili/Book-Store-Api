@@ -13,5 +13,5 @@ type Author struct {
 	Description string    `gorm:"not null"`
 	Image       string    `gorm:"not null"`
 	Nationality string    `gorm:"not null"`
-	Book        []Book    `gorm:"constraint:OnDelete:SET NULL;"`
+	Books       []Book    `gorm:"foreignKey:AuthorID;constraint:OnDelete:SET NULL;"`
 }
