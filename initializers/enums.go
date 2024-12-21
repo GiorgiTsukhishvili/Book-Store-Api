@@ -6,7 +6,7 @@ func EnumsInitializer() {
 	sql := `
 	DO $$ BEGIN
 		IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_type') THEN
-			CREATE TYPE user_type AS ENUM ('user', 'business');
+			CREATE TYPE user_type AS ENUM ('user', 'business', 'admin');
 		END IF;
 	END $$;
 	`
