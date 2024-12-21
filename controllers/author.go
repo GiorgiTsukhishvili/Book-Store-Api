@@ -68,4 +68,18 @@ func PostAuthor(ctx *gin.Context) {}
 
 func PutAuthor(ctx *gin.Context) {}
 
-func DeleteAuthor(ctx *gin.Context) {}
+func DeleteAuthor(ctx *gin.Context) {
+	authorId := ctx.Param("id")
+
+	if err := initializers.DB.Delete(models.Author{}, "id = ?", authorId).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Author deleted successfully",
+	})
+
+}
