@@ -4,14 +4,33 @@ import (
 	"log"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"gorm.io/gorm"
 )
 
 func UserFactory(db *gorm.DB) {
+	userPassword, err := utils.HashPassword("password123")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	adminPassword, err := utils.HashPassword("admin123")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	businessPassword, err := utils.HashPassword("business123")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	users := []models.User{
-		{Name: "John Doe", Email: "john@example.com", Password: "password123", Type: models.UserTypeUser},
-		{Name: "Admin User", Email: "admin@example.com", Password: "admin123", Type: models.UserTypeAdmin},
-		{Name: "Business User", Email: "business@example.com", Password: "business123", Type: models.UserTypeBusiness},
+		{Name: "John Doe", Email: "john@example.com", Password: userPassword, Type: models.UserTypeUser},
+		{Name: "Admin User", Email: "admin@example.com", Password: adminPassword, Type: models.UserTypeAdmin},
+		{Name: "Business User", Email: "business@example.com", Password: businessPassword, Type: models.UserTypeBusiness},
 	}
 
 	for _, user := range users {
