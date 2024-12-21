@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -42,7 +43,24 @@ func GetAuthors(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"authors": authors})
+	var totalRecords int64
+	if err := initializers.DB.Model(&models.Author{}).Count(&totalRecords).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	size, _ := strconv.Atoi(req.Size)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": authors,
+		"pagination": gin.H{
+			"current_page": req.Page,
+			"first_page":   1,
+			"last_page":    int(totalRecords) / size,
+		},
+	})
 
 }
 
