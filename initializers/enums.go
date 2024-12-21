@@ -15,4 +15,6 @@ func EnumsInitializer() {
 	if err != nil {
 		log.Fatal("Failed to initialize enums:", err)
 	}
+
+	log.Println("Database enums inserted successfully")
 }

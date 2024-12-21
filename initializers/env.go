@@ -13,4 +13,5 @@ func EnvInitializer() {
 		log.Fatalf("Error loading .env file")
 	}
 
+	log.Println("Env variables loaded successfully")
 }
