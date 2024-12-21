@@ -93,7 +93,29 @@ func PostAuthor(ctx *gin.Context) {
 	})
 }
 
-func PutAuthor(ctx *gin.Context) {}
+func PutAuthor(ctx *gin.Context) {
+	var req requests.AuthorPutRequest
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := initializers.DB.Model(models.Author{}).Where("id = ?", req.ID).Updates(models.Author{
+		Image:       req.Image,
+		Name:        req.Name,
+		Description: req.Description,
+		Nationality: req.Nationality,
+		BirthDate:   req.BirthDate,
+	}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Author updated successfully"})
+}
 
 func DeleteAuthor(ctx *gin.Context) {
 	authorId := ctx.Param("id")
