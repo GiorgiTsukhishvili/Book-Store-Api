@@ -18,6 +18,7 @@ func SeederInitializer() {
 		factories.BookFactory(DB)
 		factories.GenreFactory(DB)
 		factories.BookGenreFactory(DB)
+		factories.ReviewFactory(DB)
 	}
 
 	log.Println("Database seeded successfully")
