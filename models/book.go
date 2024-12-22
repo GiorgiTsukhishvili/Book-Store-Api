@@ -10,4 +10,5 @@ type Book struct {
 	Image       string `gorm:"not null"`
 	AuthorID    uint
 	UserID      uint
+	Genres      []Genre `gorm:"many2many:book_genre;"`
 }
