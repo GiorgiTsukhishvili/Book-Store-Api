@@ -10,5 +10,6 @@ type Book struct {
 	Image       string `gorm:"not null"`
 	AuthorID    uint
 	UserID      uint
-	Genres      []Genre `gorm:"many2many:book_genres;"`
+	Genres      []Genre  `gorm:"many2many:book_genres;"`
+	Reviews     []Review `gorm:"foreignKey:BookID;constraint:OnDelete:CASCADE;"`
 }
