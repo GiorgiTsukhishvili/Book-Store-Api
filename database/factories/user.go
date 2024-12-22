@@ -28,9 +28,9 @@ func UserFactory(db *gorm.DB) {
 	}
 
 	users := []models.User{
-		{Name: "John Doe", Email: "john@example.com", Password: userPassword, Type: models.UserTypeUser},
-		{Name: "Admin User", Email: "admin@example.com", Password: adminPassword, Type: models.UserTypeAdmin},
-		{Name: "Business User", Email: "business@example.com", Password: businessPassword, Type: models.UserTypeBusiness},
+		{Name: "John Doe", Email: "john@example.com", PhoneNumber: "+995511111111", Password: userPassword, Type: models.UserTypeUser},
+		{Name: "Admin User", Email: "admin@example.com", PhoneNumber: "+995511111112", Password: adminPassword, Type: models.UserTypeAdmin},
+		{Name: "Business User", Email: "business@example.com", PhoneNumber: "+995511111113", Password: businessPassword, Type: models.UserTypeBusiness},
 	}
 
 	for _, user := range users {

@@ -21,18 +21,19 @@ func Me(ctx *gin.Context) {
 
 	var user models.User
 
-	if err := initializers.DB.Select("id", "name", "email", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
+	if err := initializers.DB.Select("id", "name", "email", "phone_number", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
 	ctx.JSON(http.StatusOK, gin.H{"user": gin.H{
-		"id":         user.ID,
-		"name":       user.Name,
-		"email":      user.Email,
-		"image":      user.Image,
-		"type":       user.Type,
-		"created_at": user.CreatedAt,
+		"id":           user.ID,
+		"name":         user.Name,
+		"email":        user.Email,
+		"phone_number": user.PhoneNumber,
+		"image":        user.Image,
+		"type":         user.Type,
+		"created_at":   user.CreatedAt,
 	}})
 }
 
@@ -126,7 +127,7 @@ func UserEmailUpdate(ctx *gin.Context) {
 
 	var user models.User
 
-	if err := initializers.DB.Select("id", "name", "email", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
+	if err := initializers.DB.Select("id", "name", "email", "phone_number", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}

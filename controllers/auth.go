@@ -51,11 +51,12 @@ func Login(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"user": gin.H{
-			"id":    user.ID,
-			"name":  user.Name,
-			"email": user.Email,
-			"type":  user.Type,
-			"image": user.Image,
+			"id":           user.ID,
+			"name":         user.Name,
+			"email":        user.Email,
+			"phone_number": user.PhoneNumber,
+			"type":         user.Type,
+			"image":        user.Image,
 		},
 		"jwt": tokensInfo,
 	})
@@ -85,11 +86,12 @@ func Register(ctx *gin.Context) {
 	}
 
 	user := models.User{
-		Name:     req.Name,
-		Email:    req.Email,
-		Password: hashedPassword,
-		Type:     req.Type,
-		Image:    "default.png",
+		Name:        req.Name,
+		Email:       req.Email,
+		PhoneNumber: req.PhoneNumber,
+		Password:    hashedPassword,
+		Type:        req.Type,
+		Image:       "default.png",
 	}
 
 	code := scripts.RandomNumber()
@@ -174,11 +176,12 @@ func VerifyUser(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"user": gin.H{
-			"id":    user.ID,
-			"name":  user.Name,
-			"email": user.Email,
-			"type":  user.Type,
-			"image": user.Image,
+			"id":           user.ID,
+			"name":         user.Name,
+			"email":        user.Email,
+			"phone_number": user.PhoneNumber,
+			"type":         user.Type,
+			"image":        user.Image,
 		},
 		"jwt": tokensInfo,
 	})

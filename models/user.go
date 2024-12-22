@@ -12,10 +12,11 @@ const (
 
 type User struct {
 	gorm.Model
-	Name     string `gorm:"not null"`
-	Email    string `gorm:"unique;not null"`
-	Password string `gorm:"not null"`
-	Image    string
-	Books    []Book   `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
-	Type     UserType `gorm:"type:user_type;not null"`
+	Name        string `gorm:"not null"`
+	Email       string `gorm:"unique;not null"`
+	PhoneNumber string `gorm:"unique;not null"`
+	Password    string `gorm:"not null"`
+	Image       string
+	Books       []Book   `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Type        UserType `gorm:"type:user_type;not null"`
 }
