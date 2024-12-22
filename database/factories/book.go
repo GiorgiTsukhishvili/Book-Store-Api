@@ -17,4 +17,6 @@ func BookFactory(db *gorm.DB) {
 			log.Fatalf("failed to seed books: %v", err)
 		}
 	}
+
+	log.Println("Book seeded successfully")
 }

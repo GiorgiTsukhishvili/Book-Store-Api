@@ -19,4 +19,6 @@ func AuthorFactory(db *gorm.DB) {
 			log.Fatalf("failed to seed authors: %v", err)
 		}
 	}
+
+	log.Println("Author seeded successfully")
 }

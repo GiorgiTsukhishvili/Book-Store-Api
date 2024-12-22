@@ -21,4 +21,6 @@ func BookGenreFactory(db *gorm.DB) {
 			log.Printf("Failed to insert BookGenre: %v", err)
 		}
 	}
+
+	log.Println("Book Genre seeded successfully")
 }

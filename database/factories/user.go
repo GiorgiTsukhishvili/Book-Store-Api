@@ -38,4 +38,6 @@ func UserFactory(db *gorm.DB) {
 			log.Fatalf("failed to seed users: %v", err)
 		}
 	}
+
+	log.Println("User seeded successfully")
 }

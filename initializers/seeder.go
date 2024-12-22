@@ -12,6 +12,8 @@ func SeederInitializer() {
 
 	DB.Model(&models.User{}).Count(&userCount)
 
+	log.Println("Seeding database")
+
 	if userCount == 0 {
 		factories.UserFactory(DB)
 		factories.AuthorFactory(DB)

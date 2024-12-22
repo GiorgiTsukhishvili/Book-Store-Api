@@ -21,4 +21,6 @@ func GenreFactory(db *gorm.DB) {
 			log.Printf("Failed to seed genre '%s': %v", genre.Name, err)
 		}
 	}
+
+	log.Println("Genre seeded successfully")
 }

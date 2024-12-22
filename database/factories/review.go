@@ -18,4 +18,6 @@ func ReviewFactory(db *gorm.DB) {
 			log.Fatalf("failed to seed reviews: %v", err)
 		}
 	}
+
+	log.Println("Review seeded successfully")
 }
