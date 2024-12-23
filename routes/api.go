@@ -47,6 +47,20 @@ func ApiRoutes(router *gin.Engine) {
 					admin.DELETE("/:id", controllers.DeleteAuthor)
 				}
 			}
+
+			book := private.Group("/book")
+			{
+				book.GET("/:id")
+				book.GET("/")
+
+				admin := book.Group("")
+
+				{
+					admin.POST("/")
+					admin.PUT("/")
+					admin.DELETE("/:id")
+				}
+			}
 		}
 	}
 }
