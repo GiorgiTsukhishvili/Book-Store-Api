@@ -53,12 +53,12 @@ func ApiRoutes(router *gin.Engine) {
 				book.GET("/:id")
 				book.GET("/")
 
-				admin := book.Group("")
-
+				business := book.Group("")
+				business.Use(middlewares.BusinessCheck)
 				{
-					admin.POST("/")
-					admin.PUT("/")
-					admin.DELETE("/:id")
+					business.POST("/")
+					business.PUT("/")
+					business.DELETE("/:id")
 				}
 			}
 		}
