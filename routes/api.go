@@ -50,15 +50,15 @@ func ApiRoutes(router *gin.Engine) {
 
 			book := private.Group("/book")
 			{
-				book.GET("/:id")
-				book.GET("/")
+				book.GET("/:id", controllers.GetBook)
+				book.GET("/", controllers.GetBooks)
 
 				business := book.Group("")
 				business.Use(middlewares.BusinessCheck)
 				{
-					business.POST("/")
-					business.PUT("/")
-					business.DELETE("/:id")
+					business.POST("/", controllers.PostBook)
+					business.PUT("/", controllers.PutBook)
+					business.DELETE("/:id", controllers.DeleteBook)
 				}
 			}
 		}
