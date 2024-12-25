@@ -9,7 +9,6 @@ type BookPostRequest struct {
 	Image       string `json:"image" binding:"required"`
 	Price       string `json:"price" binding:"required"`
 	AuthorID    uint   `json:"author_id" binding:"required"`
-	UserID      uint   `json:"user_id" binding:"required"`
 	GenreIDs    []uint `json:"genre_ids" binding:"required"`
 }
 
@@ -20,6 +19,5 @@ type BookPutRequest struct {
 	Image       string `json:"image" binding:"required"`
 	Price       string `json:"price" binding:"required"`
 	AuthorID    uint   `json:"author_id" binding:"required"`
-	UserID      uint   `json:"user_id" binding:"required"`
 	GenreIDs    []uint `json:"genre_ids" binding:"required"`
 }

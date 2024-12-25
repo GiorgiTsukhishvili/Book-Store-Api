@@ -5,6 +5,8 @@ import (
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,7 +28,50 @@ func GetBooks(ctx *gin.Context) {
 }
 
 func PostBook(ctx *gin.Context) {
+	var req requests.BookPostRequest
 
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	book := models.Book{
+		Name:        req.Name,
+		Description: req.Description,
+		Image:       req.Image,
+		Price:       req.Price,
+		AuthorID:    req.AuthorID,
+		UserID:      claims.UserID,
+	}
+
+	if err := initializers.DB.Create(&book).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	for _, genreID := range req.GenreIDs {
+		bookGenre := models.BookGenre{
+			BookID:  int(book.ID),
+			GenreID: int(genreID),
+		}
+
+		if err := initializers.DB.Create(&bookGenre).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"book": book,
+	})
 }
 
 func PutBook(ctx *gin.Context) {
