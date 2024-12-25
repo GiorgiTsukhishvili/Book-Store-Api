@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -24,7 +25,49 @@ func GetBook(ctx *gin.Context) {
 }
 
 func GetBooks(ctx *gin.Context) {
+	var req requests.BookGetRequest
 
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	paginate := scripts.Paginate(req.Page, req.Size, ctx)
+
+	var books []models.Book
+
+	query := initializers.DB
+
+	if req.Keyword != "" {
+		query = query.Where("name LIKE ?", "%"+req.Keyword+"%")
+	}
+
+	if err := query.Scopes(paginate).Find(&books).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "books not found"})
+		return
+	}
+
+	var totalRecords int64
+	if err := query.Model(&models.Author{}).Count(&totalRecords).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	size, _ := strconv.Atoi(req.Size)
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"data": books,
+		"pagination": gin.H{
+			"current_page": req.Page,
+			"first_page":   1,
+			"last_page":    int(totalRecords) / size,
+			"total":        totalRecords,
+		},
+	})
 }
 
 func PostBook(ctx *gin.Context) {

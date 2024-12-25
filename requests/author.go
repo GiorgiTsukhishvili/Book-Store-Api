@@ -3,8 +3,8 @@ package requests
 import "time"
 
 type AuthorGetRequest struct {
-	Page string `json:"page" binding:"required"`
-	Size string `json:"size" binding:"required"`
+	Page string `form:"page" binding:"required"`
+	Size string `form:"size" binding:"required"`
 }
 
 type AuthorPostRequest struct {

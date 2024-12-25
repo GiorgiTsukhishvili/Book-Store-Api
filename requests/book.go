@@ -1,6 +1,9 @@
 package requests
 
 type BookGetRequest struct {
+	Page    string `form:"page" binding:"required"`
+	Size    string `form:"size" binding:"required"`
+	Keyword string `form:"keyword"`
 }
 
 type BookPostRequest struct {

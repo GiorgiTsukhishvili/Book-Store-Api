@@ -27,7 +27,7 @@ func GetAuthor(ctx *gin.Context) {
 func GetAuthors(ctx *gin.Context) {
 	var req requests.AuthorGetRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBindQuery(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -39,7 +39,7 @@ func GetAuthors(ctx *gin.Context) {
 	var authors []models.Author
 
 	if err := initializers.DB.Scopes(paginate).Find(&authors).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "author not found"})
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "authors not found"})
 		return
 	}
 
@@ -59,6 +59,7 @@ func GetAuthors(ctx *gin.Context) {
 			"current_page": req.Page,
 			"first_page":   1,
 			"last_page":    int(totalRecords) / size,
+			"total":        totalRecords,
 		},
 	})
 }
