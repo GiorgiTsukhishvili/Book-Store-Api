@@ -61,6 +61,14 @@ func ApiRoutes(router *gin.Engine) {
 					business.DELETE("/:id", controllers.DeleteBook)
 				}
 			}
+
+			review := private.Group("/review")
+			{
+				review.GET("/:id")
+				review.GET("/")
+				review.POST("/")
+				review.PUT("/")
+			}
 		}
 	}
 }
