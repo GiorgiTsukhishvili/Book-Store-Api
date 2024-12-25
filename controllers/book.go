@@ -50,7 +50,7 @@ func GetBooks(ctx *gin.Context) {
 	}
 
 	var totalRecords int64
-	if err := query.Model(&models.Author{}).Count(&totalRecords).Error; err != nil {
+	if err := query.Model(&models.Book{}).Count(&totalRecords).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
