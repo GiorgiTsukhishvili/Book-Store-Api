@@ -64,10 +64,10 @@ func ApiRoutes(router *gin.Engine) {
 
 			review := private.Group("/review")
 			{
-				review.GET("/:id")
-				review.GET("/")
-				review.POST("/")
-				review.PUT("/")
+				review.GET("/:id", controllers.GetReview)
+				review.GET("/", controllers.GetReviews)
+				review.POST("/", controllers.PostReview)
+				review.PUT("/", controllers.PutReview)
 			}
 		}
 	}
