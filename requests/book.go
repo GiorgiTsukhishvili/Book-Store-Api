@@ -13,7 +13,7 @@ type BookPostRequest struct {
 }
 
 type BookPutRequest struct {
-	ID          string `json:"id" binding:"required"`
+	ID          uint   `json:"id" binding:"required"`
 	Name        string `json:"name" binding:"required"`
 	Description string `json:"description" binding:"required"`
 	Image       string `json:"image" binding:"required"`

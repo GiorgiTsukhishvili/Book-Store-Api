@@ -75,7 +75,50 @@ func PostBook(ctx *gin.Context) {
 }
 
 func PutBook(ctx *gin.Context) {
+	var req requests.BookPutRequest
 
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	if err := initializers.DB.Model(models.Book{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Book{
+		Name:        req.Name,
+		Description: req.Description,
+		Image:       req.Image,
+		Price:       req.Price,
+		AuthorID:    req.AuthorID,
+	}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	if err := initializers.DB.Delete(models.BookGenre{}, "book_id = ?", req.ID).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	for _, genreID := range req.GenreIDs {
+		bookGenre := models.BookGenre{
+			BookID:  int(req.ID),
+			GenreID: int(genreID),
+		}
+
+		if err := initializers.DB.Create(&bookGenre).Error; err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "Book updated successfully"})
 }
 
 func DeleteBook(ctx *gin.Context) {
