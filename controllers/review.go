@@ -115,4 +115,27 @@ func PutReview(ctx *gin.Context) {
 	}
 
 	claims := scripts.GetUserClaims(ctx)
+
+	bookId, err := strconv.Atoi(req.BookID)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	if err := initializers.DB.Model(models.Review{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Review{
+		Rating:  req.Rating,
+		BookID:  uint(bookId),
+		Comment: req.Comment,
+		UserID:  claims.UserID,
+	}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Review updated successfully",
+	})
 }
