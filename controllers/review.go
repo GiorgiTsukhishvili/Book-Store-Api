@@ -65,9 +65,54 @@ func GetReviews(ctx *gin.Context) {
 }
 
 func PostReview(ctx *gin.Context) {
+	var req requests.ReviewPostRequest
 
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	bookId, err := strconv.Atoi(req.BookID)
+
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var review = models.Review{
+		Rating:  req.Rating,
+		BookID:  uint(bookId),
+		Comment: req.Comment,
+		UserID:  claims.UserID,
+	}
+
+	if err := initializers.DB.Create(&review).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"review": review,
+	})
 }
 
 func PutReview(ctx *gin.Context) {
+	var req requests.ReviewPutRequest
 
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
 }
