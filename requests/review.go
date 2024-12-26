@@ -6,7 +6,14 @@ type ReviewGetRequest struct {
 }
 
 type ReviewPostRequest struct {
+	Rating  string `json:"rating" binding:"required"`
+	Comment string `json:"comment" binding:"required"`
+	BookID  string `json:"book_id" binding:"required"`
 }
 
 type ReviewPutRequest struct {
+	ID      string `json:"id" binding:"required"`
+	Rating  string `json:"rating" binding:"required"`
+	Comment string `json:"comment" binding:"required"`
+	BookID  string `json:"book_id" binding:"required"`
 }
