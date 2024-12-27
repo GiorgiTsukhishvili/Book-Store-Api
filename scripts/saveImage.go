@@ -1,11 +1,14 @@
 package scripts
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func SaveImage(ctx *gin.Context) string {
@@ -15,14 +18,17 @@ func SaveImage(ctx *gin.Context) string {
 		return ""
 	}
 
-	uploadDir := "./uploads"
+	uploadDir := "./public/images"
 	err = os.MkdirAll(uploadDir, os.ModePerm)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create uploads directory"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create images directory"})
 		return ""
 	}
 
-	filePath := filepath.Join(uploadDir, file.Filename)
+	ext := filepath.Ext(file.Filename)
+	uniqueFilename := fmt.Sprintf("%d-%s%s", time.Now().UnixNano(), uuid.New().String(), ext)
+
+	filePath := filepath.Join(uploadDir, uniqueFilename)
 	err = ctx.SaveUploadedFile(file, filePath)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save image"})

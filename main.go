@@ -5,6 +5,9 @@ import (
 	"os"
 	"strings"
 
+	_ "image/jpeg"
+	_ "image/png"
+
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/config"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/routes"

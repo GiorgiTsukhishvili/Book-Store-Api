@@ -66,17 +66,19 @@ func GetAuthors(ctx *gin.Context) {
 func PostAuthor(ctx *gin.Context) {
 	var req requests.AuthorPostRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
+	image := scripts.SaveImage(ctx)
+
 	author := models.Author{
 		Name:        req.Name,
 		BirthDate:   req.BirthDate,
-		Image:       req.Image,
+		Image:       image,
 		Description: req.Description,
 		Nationality: req.Nationality,
 	}
