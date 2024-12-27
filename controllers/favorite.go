@@ -52,6 +52,35 @@ func GetUserFavorites(ctx *gin.Context) {
 	})
 }
 
-func PostFavorite(ctx *gin.Context) {}
+func PostFavorite(ctx *gin.Context) {
+	var req requests.FavoritePostRequest
+
+	if err := ctx.ShouldBindQuery(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	BookID := scripts.ConvertStringToInt(req.BookID, ctx)
+
+	favorite := models.Favorite{
+		BookID: uint(BookID),
+		UserID: claims.UserID,
+	}
+
+	if err := initializers.DB.Create(&favorite).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"favorite": favorite,
+	})
+}
 
 func DeleteFavorite(ctx *gin.Context) {}
