@@ -17,7 +17,8 @@ type User struct {
 	PhoneNumber string `gorm:"unique;not null"`
 	Password    string `gorm:"not null"`
 	Image       string
-	Type        UserType `gorm:"type:user_type;not null"`
-	Books       []Book   `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
-	Reviews     []Review `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Type        UserType   `gorm:"type:user_type;not null"`
+	Books       []Book     `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Reviews     []Review   `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
+	Favorites   []Favorite `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE;"`
 }
