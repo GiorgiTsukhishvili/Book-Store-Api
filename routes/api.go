@@ -72,9 +72,9 @@ func ApiRoutes(router *gin.Engine) {
 
 			favorite := private.Group("/favorite")
 			{
-				favorite.GET("/")
-				favorite.POST("/")
-				favorite.DELETE("/")
+				favorite.GET("/", controllers.GetUserFavorites)
+				favorite.POST("/", controllers.PostFavorite)
+				favorite.DELETE("/", controllers.DeleteFavorite)
 			}
 		}
 	}
