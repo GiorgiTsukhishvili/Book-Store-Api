@@ -15,7 +15,7 @@ func GetBook(ctx *gin.Context) {
 
 	var Book models.Book
 
-	if err := initializers.DB.Preload("Reviews").Preload("Genres").Preload("Author").Preload("User").First(&Book, "id = ?", bookID).Error; err != nil {
+	if err := initializers.DB.Preload("Reviews").Preload("Genres").Preload("Favorites").Preload("Author").Preload("User").First(&Book, "id = ?", bookID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "Book not found"})
 		return
 	}
@@ -43,7 +43,7 @@ func GetBooks(ctx *gin.Context) {
 		query = query.Where("name LIKE ?", "%"+req.Keyword+"%")
 	}
 
-	if err := query.Scopes(paginate).Preload("Reviews").Preload("Genres").Preload("Author").Preload("User").Find(&books).Error; err != nil {
+	if err := query.Scopes(paginate).Preload("Reviews").Preload("Genres").Preload("Favorites").Preload("Author").Preload("User").Find(&books).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "books not found"})
 		return
 	}
