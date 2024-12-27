@@ -83,4 +83,17 @@ func PostFavorite(ctx *gin.Context) {
 	})
 }
 
-func DeleteFavorite(ctx *gin.Context) {}
+func DeleteFavorite(ctx *gin.Context) {
+	favoriteId := ctx.Param("id")
+
+	if err := initializers.DB.Delete(models.Favorite{}, "id = ?", favoriteId).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": "Favorite deleted successfully",
+	})
+}
