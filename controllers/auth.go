@@ -91,7 +91,7 @@ func Register(ctx *gin.Context) {
 		PhoneNumber: req.PhoneNumber,
 		Password:    hashedPassword,
 		Type:        req.Type,
-		Image:       "default.png",
+		Image:       "/public/images/default.png",
 	}
 
 	code := scripts.RandomNumber()

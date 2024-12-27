@@ -74,16 +74,24 @@ func PutUserPassword(ctx *gin.Context) {
 func PutUser(ctx *gin.Context) {
 	var req requests.UserPutRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
+	var image string
+
+	if req.ImagePath != "" {
+		image = req.ImagePath
+	} else {
+		image = scripts.SaveImage(ctx)
+	}
+
 	claims := scripts.GetUserClaims(ctx)
 
-	if err := initializers.DB.Model(models.User{}).Where("id = ?", claims.UserID).Updates(models.User{Name: req.Name, Image: req.Image}).Error; err != nil {
+	if err := initializers.DB.Model(models.User{}).Where("id = ?", claims.UserID).Updates(models.User{Name: req.Name, Image: image}).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}

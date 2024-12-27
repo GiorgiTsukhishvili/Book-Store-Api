@@ -1,8 +1,11 @@
 package requests
 
+import "mime/multipart"
+
 type UserPutRequest struct {
-	Name  string `json:"name" binding:"required"`
-	Image string `json:"image" binding:"required"`
+	Name      string                `from:"name" binding:"required"`
+	Image     *multipart.FileHeader `from:"image" binding:"required"`
+	ImagePath string                `from:"image_path" binding:"required"`
 }
 
 type UserEmailPutRequest struct {
