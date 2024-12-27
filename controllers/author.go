@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -51,7 +50,7 @@ func GetAuthors(ctx *gin.Context) {
 		return
 	}
 
-	size, _ := strconv.Atoi(req.Size)
+	size := scripts.ConvertStringToInt(req.Size, ctx)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"data": authors,

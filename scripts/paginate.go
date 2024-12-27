@@ -1,26 +1,14 @@
 package scripts
 
 import (
-	"net/http"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 func Paginate(Page string, Size string, ctx *gin.Context) func(db *gorm.DB) *gorm.DB {
-	page, err := strconv.Atoi(Page)
+	page := ConvertStringToInt(Page, ctx)
 
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid page parameter"})
-		return nil
-	}
-
-	size, err := strconv.Atoi(Size)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid size parameter"})
-		return nil
-	}
+	size := ConvertStringToInt(Size, ctx)
 
 	return func(db *gorm.DB) *gorm.DB {
 		if page <= 0 {

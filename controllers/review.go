@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -51,7 +50,7 @@ func GetReviews(ctx *gin.Context) {
 		return
 	}
 
-	size, _ := strconv.Atoi(req.Size)
+	size := scripts.ConvertStringToInt(req.Size, ctx)
 
 	ctx.JSON(http.StatusOK, gin.H{
 		"data": reviews,
@@ -76,14 +75,7 @@ func PostReview(ctx *gin.Context) {
 
 	claims := scripts.GetUserClaims(ctx)
 
-	bookId, err := strconv.Atoi(req.BookID)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	bookId := scripts.ConvertStringToInt(req.BookID, ctx)
 
 	var review = models.Review{
 		Rating:  req.Rating,
@@ -116,14 +108,7 @@ func PutReview(ctx *gin.Context) {
 
 	claims := scripts.GetUserClaims(ctx)
 
-	bookId, err := strconv.Atoi(req.BookID)
-
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{
-			"error": err.Error(),
-		})
-		return
-	}
+	bookId := scripts.ConvertStringToInt(req.BookID, ctx)
 
 	if err := initializers.DB.Model(models.Review{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Review{
 		Rating:  req.Rating,
