@@ -98,15 +98,23 @@ func PostAuthor(ctx *gin.Context) {
 func PutAuthor(ctx *gin.Context) {
 	var req requests.AuthorPutRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
+	var image string
+
+	if req.ImagePath != "" {
+		image = req.ImagePath
+	} else {
+		image = scripts.SaveImage(ctx)
+	}
+
 	if err := initializers.DB.Model(models.Author{}).Where("id = ?", req.ID).Updates(models.Author{
-		Image:       req.Image,
+		Image:       image,
 		Name:        req.Name,
 		Description: req.Description,
 		Nationality: req.Nationality,
