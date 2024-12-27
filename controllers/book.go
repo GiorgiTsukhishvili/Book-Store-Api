@@ -72,19 +72,21 @@ func GetBooks(ctx *gin.Context) {
 func PostBook(ctx *gin.Context) {
 	var req requests.BookPostRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
 		return
 	}
 
+	image := scripts.SaveImage(ctx)
+
 	claims := scripts.GetUserClaims(ctx)
 
 	book := models.Book{
 		Name:        req.Name,
 		Description: req.Description,
-		Image:       req.Image,
+		Image:       image,
 		Price:       req.Price,
 		AuthorID:    req.AuthorID,
 		UserID:      claims.UserID,
@@ -119,7 +121,7 @@ func PostBook(ctx *gin.Context) {
 func PutBook(ctx *gin.Context) {
 	var req requests.BookPutRequest
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.ShouldBind(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -128,10 +130,18 @@ func PutBook(ctx *gin.Context) {
 
 	claims := scripts.GetUserClaims(ctx)
 
+	var image string
+
+	if req.ImagePath != "" {
+		image = req.ImagePath
+	} else {
+		image = scripts.SaveImage(ctx)
+	}
+
 	if err := initializers.DB.Model(models.Book{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Book{
 		Name:        req.Name,
 		Description: req.Description,
-		Image:       req.Image,
+		Image:       image,
 		Price:       req.Price,
 		AuthorID:    req.AuthorID,
 	}).Error; err != nil {
