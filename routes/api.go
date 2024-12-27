@@ -69,6 +69,13 @@ func ApiRoutes(router *gin.Engine) {
 				review.POST("/", controllers.PostReview)
 				review.PUT("/", controllers.PutReview)
 			}
+
+			favorite := private.Group("/favorite")
+			{
+				favorite.GET("/")
+				favorite.POST("/")
+				favorite.DELETE("/")
+			}
 		}
 	}
 }
