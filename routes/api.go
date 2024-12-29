@@ -79,9 +79,8 @@ func ApiRoutes(router *gin.Engine) {
 
 			notification := private.Group("/notification")
 			{
-				notification.GET("/")
-				notification.POST("/")
-				notification.PUT("/")
+				notification.GET("/", controllers.GetNotifications)
+				notification.PUT("/", controllers.PutNotification)
 			}
 		}
 	}
