@@ -51,5 +51,26 @@ func GetNotifications(ctx *gin.Context) {
 }
 
 func PutNotification(ctx *gin.Context) {
+	var req requests.NotificationPutRequest
 
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	claims := scripts.GetUserClaims(ctx)
+
+	if err := initializers.DB.Model(models.Notification{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Notification{
+		IsNew:  false,
+		UserID: claims.UserID,
+	}).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{
+		"message": "Notification updated successfully",
+	})
 }
