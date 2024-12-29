@@ -76,6 +76,13 @@ func ApiRoutes(router *gin.Engine) {
 				favorite.POST("/", controllers.PostFavorite)
 				favorite.DELETE("/", controllers.DeleteFavorite)
 			}
+
+			notification := private.Group("/notification")
+			{
+				notification.GET("/")
+				notification.POST("/")
+				notification.PUT("/")
+			}
 		}
 	}
 }
