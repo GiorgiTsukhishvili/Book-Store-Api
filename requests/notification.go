@@ -6,5 +6,5 @@ type NotificationGetRequest struct {
 }
 
 type NotificationPutRequest struct {
-	ID string `json:"id" binding:"required"`
+	IDs []string `json:"id" binding:"required"`
 }

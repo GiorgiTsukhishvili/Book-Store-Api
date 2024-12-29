@@ -62,12 +62,14 @@ func PutNotification(ctx *gin.Context) {
 
 	claims := scripts.GetUserClaims(ctx)
 
-	if err := initializers.DB.Model(models.Notification{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Notification{
-		IsNew:  false,
-		UserID: claims.UserID,
-	}).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-		return
+	for _, notificationID := range req.IDs {
+		if err := initializers.DB.Model(models.Notification{}).Where("id = ?", notificationID).Where("user_id = ?", claims.UserID).Updates(models.Notification{
+			IsNew:  false,
+			UserID: claims.UserID,
+		}).Error; err != nil {
+			ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+			return
+		}
 	}
 
 	ctx.JSON(http.StatusCreated, gin.H{
