@@ -78,6 +78,28 @@ func PostFavorite(ctx *gin.Context) {
 		return
 	}
 
+	var book models.Book
+
+	if err := initializers.DB.First(&book, "id = ?", BookID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Book not found"})
+		return
+	}
+
+	notification := models.Notification{
+		BookID:   uint(BookID),
+		UserID:   claims.UserID,
+		IsNew:    true,
+		Type:     models.NotificationTypeFavorite,
+		PersonID: book.UserID,
+	}
+
+	if err := initializers.DB.Create(&notification).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
 	ctx.JSON(http.StatusCreated, gin.H{
 		"favorite": favorite,
 	})
