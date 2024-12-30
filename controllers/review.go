@@ -75,16 +75,38 @@ func PostReview(ctx *gin.Context) {
 
 	claims := scripts.GetUserClaims(ctx)
 
-	bookId := scripts.ConvertStringToInt(req.BookID, ctx)
+	BookID := scripts.ConvertStringToInt(req.BookID, ctx)
 
 	var review = models.Review{
 		Rating:  req.Rating,
-		BookID:  uint(bookId),
+		BookID:  uint(BookID),
 		Comment: req.Comment,
 		UserID:  claims.UserID,
 	}
 
 	if err := initializers.DB.Create(&review).Error; err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	var book models.Book
+
+	if err := initializers.DB.First(&book, "id = ?", BookID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "Book not found"})
+		return
+	}
+
+	notification := models.Notification{
+		BookID:   uint(BookID),
+		UserID:   claims.UserID,
+		IsNew:    true,
+		Type:     models.NotificationTypeFavorite,
+		PersonID: book.UserID,
+	}
+
+	if err := initializers.DB.Create(&notification).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
