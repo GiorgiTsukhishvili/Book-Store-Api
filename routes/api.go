@@ -7,7 +7,6 @@ import (
 )
 
 func ApiRoutes(router *gin.Engine) {
-
 	v1 := router.Group("/api/v1")
 	v1.Use(middlewares.LangCheck)
 	{

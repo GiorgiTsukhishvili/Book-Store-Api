@@ -34,6 +34,7 @@ func main() {
 	router.Use(config.CorsConfig())
 
 	routes.ApiRoutes(router)
+	routes.ChannelRoutes(router)
 
 	router.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
