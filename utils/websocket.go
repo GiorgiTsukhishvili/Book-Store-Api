@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,6 +9,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -67,7 +69,7 @@ func HandleWebSocket(c *gin.Context) {
 	}
 }
 
-func SendMessage(UserID string, message string) error {
+func SendMessage(UserID string, message models.Notification) error {
 	UsersMu.RLock()
 	User, exists := Users[UserID]
 	UsersMu.RUnlock()
@@ -76,11 +78,13 @@ func SendMessage(UserID string, message string) error {
 		return fmt.Errorf("User with ID %s not found", UserID)
 	}
 
-	err := User.Conn.WriteMessage(websocket.TextMessage, []byte(message))
+	data, err := json.Marshal(message)
 	if err != nil {
-		log.Printf("Error sending message to %s: %v\n", UserID, err)
-		return err
+		return fmt.Errorf("error marshalling message: %v", err)
 	}
-	log.Printf("Message sent to %s: %s\n", UserID, message)
+
+	User.Conn.WriteMessage(websocket.TextMessage, data)
+
+	log.Printf("Message sent to %s \n", UserID)
 	return nil
 }
