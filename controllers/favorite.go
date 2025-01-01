@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/requests"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -99,6 +101,10 @@ func PostFavorite(ctx *gin.Context) {
 		})
 		return
 	}
+
+	ReceiverID := strconv.FormatUint(uint64(book.UserID), 10)
+
+	utils.SendMessage(ReceiverID, notification)
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"favorite": favorite,

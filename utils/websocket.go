@@ -27,10 +27,6 @@ var (
 			return strings.Contains(os.Getenv("ALLOWED_ORIGINS"), r.Header.Get("Origin"))
 		},
 	}
-	MessageQueue = make(chan struct {
-		ClientID string
-		Message  string
-	})
 )
 
 func HandleWebSocket(c *gin.Context) {
