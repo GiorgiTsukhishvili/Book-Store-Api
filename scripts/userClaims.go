@@ -3,11 +3,17 @@ package scripts
 import (
 	"net/http"
 
-	"github.com/GiorgiTsukhishvili/BookShelf-Api/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-func GetUserClaims(ctx *gin.Context) *utils.CustomClaims {
+type UserClaims struct {
+	UserID uint
+	Email  string
+	jwt.RegisteredClaims
+}
+
+func GetUserClaims(ctx *gin.Context) *UserClaims {
 	userInfo, exists := ctx.Get("user")
 
 	if !exists {
@@ -15,7 +21,8 @@ func GetUserClaims(ctx *gin.Context) *utils.CustomClaims {
 		return nil
 	}
 
-	claims, ok := userInfo.(*utils.CustomClaims)
+	claims, ok := userInfo.(*UserClaims)
+
 	if !ok {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid user data"})
 		return nil

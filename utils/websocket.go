@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"sync"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/scripts"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
@@ -29,36 +31,34 @@ var (
 	}
 )
 
-func HandleWebSocket(c *gin.Context) {
-	conn, err := Upgrader.Upgrade(c.Writer, c.Request, nil)
+func HandleWebSocket(ctx *gin.Context) {
+	conn, err := Upgrader.Upgrade(ctx.Writer, ctx.Request, nil)
 	if err != nil {
 		log.Println("Error upgrading connection:", err)
 		return
 	}
 	defer conn.Close()
 
-	userID := c.Query("id")
-	if userID == "" {
-		log.Println("User ID is required")
-		return
-	}
+	claims := scripts.GetUserClaims(ctx)
+
+	UserID := strconv.FormatUint(uint64(claims.UserID), 10)
 
 	user := &User{
-		ID:   userID,
+		ID:   UserID,
 		Conn: conn,
 	}
 	UsersMu.Lock()
-	Users[userID] = user
+	Users[UserID] = user
 	UsersMu.Unlock()
 
-	log.Printf("User connected: %s\n", userID)
+	log.Printf("User connected: %s\n", UserID)
 
 	for {
 		_, _, err := conn.ReadMessage()
 		if err != nil {
-			log.Printf("User disconnected: %s\n", userID)
+			log.Printf("User disconnected: %s\n", UserID)
 			UsersMu.Lock()
-			delete(Users, userID)
+			delete(Users, UserID)
 			UsersMu.Unlock()
 			break
 		}
