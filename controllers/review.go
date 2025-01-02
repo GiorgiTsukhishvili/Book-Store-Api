@@ -117,7 +117,7 @@ func PostReview(ctx *gin.Context) {
 
 	ReceiverID := strconv.FormatUint(uint64(book.UserID), 10)
 
-	utils.SendMessage(ReceiverID, notification)
+	go utils.SendMessage(ReceiverID, notification)
 
 	ctx.JSON(http.StatusCreated, gin.H{
 		"review": review,
