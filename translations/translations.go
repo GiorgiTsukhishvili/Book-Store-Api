@@ -10,7 +10,7 @@ var EmailTranslationData = EmailTranslations{
 		"verify-button":           "Verify account",
 		"clicking":                "If you encounter any issues using the code, please contact us:",
 		"any-problem":             "If you have any problems, please contact us:",
-		"crew":                    "BookQuotes Crew",
+		"crew":                    "BookShelf Crew",
 		"hello":                   "Hello",
 		"password-reset":          "Password Reset",
 		"reset-text":              "Please use the 4-digit code below to reset your password:",

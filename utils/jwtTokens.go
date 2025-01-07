@@ -25,8 +25,8 @@ type JWTInfo struct {
 }
 
 func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
-
 	expiration, err := strconv.Atoi(os.Getenv("JWT_TOKEN_EXPIRATION_DATE"))
+
 	if err != nil {
 		return nil, err
 	}

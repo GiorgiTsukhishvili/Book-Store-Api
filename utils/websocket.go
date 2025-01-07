@@ -33,10 +33,12 @@ var (
 
 func HandleWebSocket(ctx *gin.Context) {
 	conn, err := Upgrader.Upgrade(ctx.Writer, ctx.Request, nil)
+
 	if err != nil {
 		log.Println("Error upgrading connection:", err)
 		return
 	}
+
 	defer conn.Close()
 
 	claims := scripts.GetUserClaims(ctx)
