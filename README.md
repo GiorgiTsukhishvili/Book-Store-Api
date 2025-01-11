@@ -20,7 +20,7 @@ BookShelf is a platform designed for businesses to showcase their books along wi
 - Users can browse and search for books
 - Users can add books to their favorites
 - Users can leave reviews for books
-- Organize books by categories
+- Organize books by genres
 
 ## Installation
 
