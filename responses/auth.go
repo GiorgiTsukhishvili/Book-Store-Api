@@ -14,6 +14,6 @@ type RefreshTokenResponse struct {
 	JWT utils.JWTInfo `json:"jwt"`
 }
 
-type LogoutResponse struct {
+type MessageResponse struct {
 	Message string `json:"message"`
 }
