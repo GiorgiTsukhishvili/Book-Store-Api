@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
@@ -100,9 +101,13 @@ func PutUser(ctx *gin.Context) {
 }
 
 func DeleteUser(ctx *gin.Context) {
-	userID := ctx.Param("id")
+	userID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
 
-	if err := initializers.DB.Delete(models.User{}, "id = ?", userID).Error; err != nil {
+	if err := initializers.DB.Delete(&models.User{}, "id = ?", userID).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}

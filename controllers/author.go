@@ -1,7 +1,9 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -73,7 +75,13 @@ func PostAuthor(ctx *gin.Context) {
 		return
 	}
 
-	image := scripts.SaveImage(ctx)
+	var image string
+
+	if req.ImagePath != "" {
+		image = req.ImagePath
+	} else {
+		image = scripts.SaveImage(ctx)
+	}
 
 	author := models.Author{
 		Name:        req.Name,
@@ -99,6 +107,7 @@ func PutAuthor(ctx *gin.Context) {
 	var req requests.AuthorPutRequest
 
 	if err := ctx.ShouldBind(&req); err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -128,9 +137,13 @@ func PutAuthor(ctx *gin.Context) {
 }
 
 func DeleteAuthor(ctx *gin.Context) {
-	authorId := ctx.Param("id")
+	authorId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
 
-	if err := initializers.DB.Delete(models.Author{}, "id = ?", authorId).Error; err != nil {
+	if err := initializers.DB.Delete(&models.Author{}, "id = ?", authorId).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/initializers"
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/models"
@@ -149,7 +150,7 @@ func PutBook(ctx *gin.Context) {
 		return
 	}
 
-	if err := initializers.DB.Delete(models.BookGenre{}, "book_id = ?", req.ID).Error; err != nil {
+	if err := initializers.DB.Delete(&models.BookGenre{}, "book_id = ?", req.ID).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -174,9 +175,13 @@ func PutBook(ctx *gin.Context) {
 }
 
 func DeleteBook(ctx *gin.Context) {
-	bookId := ctx.Param("id")
+	bookId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
 
-	if err := initializers.DB.Delete(models.Book{}, "id = ?", bookId).Error; err != nil {
+	if err := initializers.DB.Delete(&models.Book{}, "id = ?", bookId).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

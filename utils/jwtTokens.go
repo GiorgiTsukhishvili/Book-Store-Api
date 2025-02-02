@@ -7,15 +7,10 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/GiorgiTsukhishvili/BookShelf-Api/types"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
-
-type CustomClaims struct {
-	UserID uint
-	Email  string
-	jwt.RegisteredClaims
-}
 
 type JWTInfo struct {
 	Token                  string
@@ -39,7 +34,7 @@ func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
 	tokenExpiration := time.Now().Add(time.Duration(expiration) * time.Minute)
 	refreshTokenExpiration := time.Now().Add(time.Duration(refreshExpiration) * time.Minute)
 
-	claims := CustomClaims{
+	claims := types.CustomClaims{
 		UserID: userID,
 		Email:  email,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -70,8 +65,8 @@ func GenerateJWTTokens(userID uint, email string) (*JWTInfo, error) {
 	return &jwtInfo, nil
 }
 
-func ParseJwtToken(tokenString string, ctx *gin.Context, secret string) *CustomClaims {
-	token, err := jwt.ParseWithClaims(tokenString, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+func ParseJwtToken(tokenString string, ctx *gin.Context, secret string) *types.CustomClaims {
+	token, err := jwt.ParseWithClaims(tokenString, &types.CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("unexpected signing method")
 		}
@@ -79,16 +74,14 @@ func ParseJwtToken(tokenString string, ctx *gin.Context, secret string) *CustomC
 	})
 
 	if err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
-		ctx.Abort()
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
 		return nil
 	}
 
-	claims, ok := token.Claims.(*CustomClaims)
+	claims, ok := token.Claims.(*types.CustomClaims)
 
 	if !ok || !token.Valid {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
-		ctx.Abort()
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
 		return nil
 	}
 

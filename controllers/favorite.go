@@ -112,9 +112,13 @@ func PostFavorite(ctx *gin.Context) {
 }
 
 func DeleteFavorite(ctx *gin.Context) {
-	favoriteId := ctx.Param("id")
+	favoriteId, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
 
-	if err := initializers.DB.Delete(models.Favorite{}, "id = ?", favoriteId).Error; err != nil {
+	if err := initializers.DB.Delete(&models.Favorite{}, "id = ?", favoriteId).Error; err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

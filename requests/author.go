@@ -14,7 +14,8 @@ type AuthorPostRequest struct {
 	Name        string                `form:"name" binding:"required"`
 	BirthDate   time.Time             `form:"birth_date" binding:"required"`
 	Description string                `form:"description" binding:"required"`
-	Image       *multipart.FileHeader `form:"image" binding:"required"`
+	Image       *multipart.FileHeader `form:"image"`
+	ImagePath   string                `form:"image_path"`
 	Nationality string                `form:"nationality" binding:"required"`
 }
 
@@ -23,7 +24,7 @@ type AuthorPutRequest struct {
 	Name        string                `form:"name" binding:"required"`
 	BirthDate   time.Time             `form:"birth_date" binding:"required"`
 	Description string                `form:"description" binding:"required"`
-	Image       *multipart.FileHeader `form:"image" binding:"required"`
-	ImagePath   string                `form:"image_path" binding:"required"`
+	Image       *multipart.FileHeader `form:"image"`
+	ImagePath   string                `form:"image_path"`
 	Nationality string                `form:"nationality" binding:"required"`
 }

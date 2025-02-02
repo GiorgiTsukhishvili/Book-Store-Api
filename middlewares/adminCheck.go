@@ -15,13 +15,12 @@ func AdminCheck(ctx *gin.Context) {
 	var user models.User
 
 	if err := initializers.DB.Select("id", "name", "email", "image", "type", "created_at").First(&user, "id = ?", claims.UserID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		ctx.AbortWithStatusJSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
 
 	if user.Type != models.UserTypeAdmin {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"error": "User is has no valid credentials"})
-		ctx.Abort()
+		ctx.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "User is has no valid credentials"})
 		return
 	}
 

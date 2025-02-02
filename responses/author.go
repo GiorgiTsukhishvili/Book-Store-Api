@@ -2,7 +2,7 @@ package responses
 
 import "github.com/GiorgiTsukhishvili/BookShelf-Api/models"
 
-type AuthorGetResponse struct {
+type AuthorRetrieveResponse struct {
 	Author models.Author `json:"author"`
 }
 
