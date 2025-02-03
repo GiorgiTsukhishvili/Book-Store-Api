@@ -109,6 +109,7 @@ func ReviewPutEndpoint(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not create request: %v", err)
 	}
+
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", loginResponse.JWT.Token))
 
@@ -127,7 +128,6 @@ func ReviewPutEndpoint(t *testing.T) {
 	if response.Message == "" && response.Message != "Review updated successfully" {
 		t.Errorf("Response does not contain expected keys or values: %+v", response)
 	}
-
 }
 
 func TestReviewFlow(t *testing.T) {
