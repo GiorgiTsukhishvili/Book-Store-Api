@@ -22,7 +22,7 @@ func GetReview(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"Review": Review})
+	ctx.JSON(http.StatusOK, gin.H{"review": Review})
 }
 
 func GetReviews(ctx *gin.Context) {
