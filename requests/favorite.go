@@ -6,5 +6,5 @@ type UserFavoriteGetRequest struct {
 }
 
 type FavoritePostRequest struct {
-	BookID string `form:"book_id" binding:"required"`
+	BookID string `json:"book_id" binding:"required"`
 }

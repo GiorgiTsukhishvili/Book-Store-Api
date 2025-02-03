@@ -57,7 +57,7 @@ func GetUserFavorites(ctx *gin.Context) {
 func PostFavorite(ctx *gin.Context) {
 	var req requests.FavoritePostRequest
 
-	if err := ctx.ShouldBindQuery(&req); err != nil {
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
