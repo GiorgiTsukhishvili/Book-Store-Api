@@ -11,7 +11,7 @@ import (
 )
 
 func TestNotificationsGetEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("GET", "http://localhost:3000/api/v1/notification/?page=1&size=2", nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func TestNotificationsGetEndpoint(t *testing.T) {
 }
 
 func TestNotificationPutEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	reqBody := []byte(`{"id": ["1"]}`)
 

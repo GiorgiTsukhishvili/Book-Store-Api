@@ -1,6 +1,9 @@
 package requests
 
-import "mime/multipart"
+import (
+	"mime/multipart"
+	"time"
+)
 
 type BookGetRequest struct {
 	Page    string `form:"page" binding:"required"`
@@ -9,21 +12,24 @@ type BookGetRequest struct {
 }
 
 type BookPostRequest struct {
-	Name        string                `from:"name" binding:"required"`
-	Description string                `from:"description" binding:"required"`
-	Image       *multipart.FileHeader `from:"image" binding:"required"`
-	Price       string                `from:"price" binding:"required"`
-	AuthorID    uint                  `from:"author_id" binding:"required"`
-	GenreIDs    []uint                `from:"genre_ids" binding:"required"`
+	Name         string                `form:"name" binding:"required"`
+	Description  string                `form:"description" binding:"required"`
+	Image        *multipart.FileHeader `form:"image"`
+	ImagePath    string                `form:"image_path"`
+	CreationDate time.Time             `form:"creation_date" binding:"required"`
+	Price        string                `form:"price" binding:"required"`
+	AuthorID     uint                  `form:"author_id" binding:"required"`
+	GenreIDs     []uint                `form:"genre_ids" binding:"required"`
 }
 
 type BookPutRequest struct {
-	ID          uint                  `from:"id" binding:"required"`
-	Name        string                `from:"name" binding:"required"`
-	Description string                `from:"description" binding:"required"`
-	Image       *multipart.FileHeader `from:"image" binding:"required"`
-	ImagePath   string                `from:"image_path" binding:"required"`
-	Price       string                `from:"price" binding:"required"`
-	AuthorID    uint                  `from:"author_id" binding:"required"`
-	GenreIDs    []uint                `from:"genre_ids" binding:"required"`
+	ID           uint                  `form:"id" binding:"required"`
+	Name         string                `form:"name" binding:"required"`
+	Description  string                `form:"description" binding:"required"`
+	Image        *multipart.FileHeader `form:"image"`
+	ImagePath    string                `form:"image_path"`
+	CreationDate time.Time             `form:"creation_date" binding:"required"`
+	Price        string                `form:"price" binding:"required"`
+	AuthorID     uint                  `form:"author_id" binding:"required"`
+	GenreIDs     []uint                `form:"genre_ids" binding:"required"`
 }

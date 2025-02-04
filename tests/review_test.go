@@ -13,7 +13,7 @@ import (
 var ReviewId int
 
 func TestReviewGetEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("GET", "http://localhost:3000/api/v1/review/1", nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func TestReviewGetEndpoint(t *testing.T) {
 }
 
 func TestReviewsGetEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("GET", "http://localhost:3000/api/v1/review/?page=1&size=2", nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func TestReviewsGetEndpoint(t *testing.T) {
 }
 
 func ReviewPostEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	reqBody := []byte(`{"rating": "4", "comment": "nice", "book_id": "1"}`)
 
@@ -101,7 +101,7 @@ func ReviewPostEndpoint(t *testing.T) {
 }
 
 func ReviewPutEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	reqBody := []byte(fmt.Sprintf(`{"rating": "4", "comment": "nice", "book_id": "1", "id": "%v"}`, ReviewId))
 

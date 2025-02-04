@@ -13,7 +13,7 @@ import (
 var FavoriteId int
 
 func TestFavoritesGetEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("GET", "http://localhost:3000/api/v1/favorite/?page=1&size=2", nil)
 	if err != nil {
@@ -41,7 +41,7 @@ func TestFavoritesGetEndpoint(t *testing.T) {
 }
 
 func FavoritePostEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	reqBody := []byte(`{"book_id": "1"}`)
 
@@ -73,7 +73,7 @@ func FavoritePostEndpoint(t *testing.T) {
 }
 
 func FavoriteDeleteEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("DELETE", fmt.Sprintf("http://localhost:3000/api/v1/favorite/%v", FavoriteId), nil)
 	if err != nil {

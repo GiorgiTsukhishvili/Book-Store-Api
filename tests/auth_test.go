@@ -10,8 +10,8 @@ import (
 	"github.com/GiorgiTsukhishvili/BookShelf-Api/responses"
 )
 
-func LoginEndpointRequest(t *testing.T) responses.LoginResponse {
-	reqBody := []byte(`{"email": "admin@example.com", "password": "admin123"}`)
+func LoginEndpointRequest(t *testing.T, email string, password string) responses.LoginResponse {
+	reqBody := []byte(fmt.Sprintf(`{"email": "%s", "password": "%s"}`, email, password))
 
 	req, err := http.NewRequest("POST", "http://localhost:3000/api/v1/login", bytes.NewBuffer(reqBody))
 	if err != nil {
@@ -35,7 +35,7 @@ func LoginEndpointRequest(t *testing.T) responses.LoginResponse {
 }
 
 func TestLoginEndpoint(t *testing.T) {
-	response := LoginEndpointRequest(t)
+	response := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	if response.JWT.Token == "" ||
 		response.JWT.RefreshToken == "" ||
@@ -49,7 +49,7 @@ func TestLoginEndpoint(t *testing.T) {
 }
 
 func TestRefreshTokenEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	reqBody := []byte(fmt.Sprintf(`{"refreshToken": "%s"}`, loginResponse.JWT.RefreshToken))
 
@@ -106,7 +106,7 @@ func TestRegisterEndpoint(t *testing.T) {
 }
 
 func TestLogoutEndpoint(t *testing.T) {
-	loginResponse := LoginEndpointRequest(t)
+	loginResponse := LoginEndpointRequest(t, "admin@example.com", "admin123")
 
 	req, err := http.NewRequest("POST", "http://localhost:3000/api/v1/logout", nil)
 	if err != nil {

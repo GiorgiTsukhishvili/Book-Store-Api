@@ -80,17 +80,24 @@ func PostBook(ctx *gin.Context) {
 		return
 	}
 
-	image := scripts.SaveImage(ctx)
+	var image string
+
+	if req.ImagePath != "" {
+		image = req.ImagePath
+	} else {
+		image = scripts.SaveImage(ctx)
+	}
 
 	claims := scripts.GetUserClaims(ctx)
 
 	book := models.Book{
-		Name:        req.Name,
-		Description: req.Description,
-		Image:       image,
-		Price:       req.Price,
-		AuthorID:    req.AuthorID,
-		UserID:      claims.UserID,
+		Name:         req.Name,
+		Description:  req.Description,
+		Image:        image,
+		Price:        req.Price,
+		AuthorID:     req.AuthorID,
+		UserID:       claims.UserID,
+		CreationDate: req.CreationDate,
 	}
 
 	if err := initializers.DB.Create(&book).Error; err != nil {
@@ -140,11 +147,12 @@ func PutBook(ctx *gin.Context) {
 	}
 
 	if err := initializers.DB.Model(models.Book{}).Where("id = ?", req.ID).Where("user_id = ?", claims.UserID).Updates(models.Book{
-		Name:        req.Name,
-		Description: req.Description,
-		Image:       image,
-		Price:       req.Price,
-		AuthorID:    req.AuthorID,
+		Name:         req.Name,
+		Description:  req.Description,
+		Image:        image,
+		Price:        req.Price,
+		AuthorID:     req.AuthorID,
+		CreationDate: req.CreationDate,
 	}).Error; err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
