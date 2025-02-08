@@ -3,9 +3,9 @@ package requests
 import "mime/multipart"
 
 type UserPutRequest struct {
-	Name      string                `from:"name" binding:"required"`
-	Image     *multipart.FileHeader `from:"image" binding:"required"`
-	ImagePath string                `from:"image_path" binding:"required"`
+	Name      string                `form:"name" binding:"required"`
+	Image     *multipart.FileHeader `form:"image"`
+	ImagePath string                `form:"image_path"`
 }
 
 type UserEmailPutRequest struct {

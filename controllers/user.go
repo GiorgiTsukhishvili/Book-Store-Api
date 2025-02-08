@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -42,6 +43,7 @@ func PutUserPassword(ctx *gin.Context) {
 	var req requests.UserPasswordPutRequest
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -76,6 +78,7 @@ func PutUser(ctx *gin.Context) {
 	var req requests.UserPutRequest
 
 	if err := ctx.ShouldBind(&req); err != nil {
+		fmt.Println(err.Error())
 		ctx.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})

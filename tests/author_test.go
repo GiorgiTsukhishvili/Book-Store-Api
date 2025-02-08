@@ -134,6 +134,7 @@ func AuthorPutEndpoint(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Could not create request: %v", err)
 	}
+
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", loginResponse.JWT.Token))
 
