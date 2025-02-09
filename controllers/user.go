@@ -103,23 +103,6 @@ func PutUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
 }
 
-func DeleteUser(ctx *gin.Context) {
-	userID, err := strconv.Atoi(ctx.Param("id"))
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-		return
-	}
-
-	if err := initializers.DB.Delete(&models.User{}, "id = ?", userID).Error; err != nil {
-		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
-		return
-	}
-
-	scripts.InvalidateJwtCookies(ctx)
-
-	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
-}
-
 func UserEmailUpdate(ctx *gin.Context) {
 	var req requests.UserEmailPutRequest
 
@@ -193,4 +176,21 @@ func UserEmailUpdateVerify(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, gin.H{"message": "User email updated successfully"})
 
+}
+
+func DeleteUser(ctx *gin.Context) {
+	userID, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
+	if err := initializers.DB.Delete(&models.User{}, "id = ?", userID).Error; err != nil {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		return
+	}
+
+	scripts.InvalidateJwtCookies(ctx)
+
+	ctx.JSON(http.StatusOK, gin.H{"message": "User deleted successfully"})
 }
