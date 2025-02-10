@@ -43,6 +43,19 @@ To install and run BookShelf locally, follow these steps:
    go run main.go
    ```
 
+## Testing
+
+To test application locally, run follow these steps:
+
+1. Start the application:
+   ```sh
+   go run main.go
+   ```
+2. Run tests from test folder:
+   ```sh
+   go test ./tests/... -v
+   ```
+
 ## Usage
 
 Once the application is running, you can access it at `http://localhost:3000`. Use the interface to add, remove, and organize your books.
