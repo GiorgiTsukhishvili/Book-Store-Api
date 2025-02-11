@@ -6,6 +6,7 @@
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Testing](#testing)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
@@ -76,4 +77,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-If you have any questions or suggestions, feel free to contact me at [your-email@example.com].
+If you have any questions or suggestions, feel free to contact me on [LinkedIn](https://www.linkedin.com/in/giorgi-tsukhishvili-05b213201/).
